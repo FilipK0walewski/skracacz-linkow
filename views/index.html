@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potężny skracacz linków</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/index.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Potężny skracacz linków</h1>
+    <input id="url-input" class="input-0" type="text" placeholder="Co chcesz skrócić?">
+    <label>
+        <input id="user-url-name-checkbox" type="checkbox">
+        chce swoją nazwę
+    </label>
+    <input id="user-url-name-input" class="hidden input-0" type="text" placeholder="twoja nazwa linku">
+    <button id="save-btn">skruć</button> 
+
+    <div id="server-result"></div>
+
+    <% if (user) { %>
+        <span>Jesteś zalogowany jako <%= user.username %>!</span>
+        <a href="/your-urls">Zobacz swoje linki</a>
+        <a href="/logout">Wyloguj się</a>
+    <% } else { %>
+        <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> albo <a href="/register">zrób konto</a>.</span>
+    <% } %>
+</body>
+
+</html>

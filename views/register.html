@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zrób konto</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <p>Zrób se konto</p>
+    <form action="/register" method="post" style="display: flex; flex-direction: column">
+        <input name="username" type="text" placeholder="nazwa użytkownika" required>
+        <input name="password0" type="password" placeholder="hasło" required>
+        <input name="password1" type="password" placeholder="powtórz hasło" required>
+        <button>Zrób konto</button>
+    </form>
+    <span>Masz już konto?!? <a href="/login">Zaloguj się</a></span>
+    <a href="/">Srona domowa</a>
+</body>
+
+</html>
