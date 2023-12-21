@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twoje linki</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body style="justify-content: start;">
+    <br>
+    <p><%= username %> to są twoje linki.</p>
+    <span>Kliknij <a href="/">tutej</a> aby wrócić do strony domowej.</span>
+    <table>
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>nice url</th>
+            <th>url</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < urls.length; i++) { %>
+            <tr>
+              <td><%= urls[i].name %></td>
+              <td><%= urls[i].niceUrl %></td>
+              <td><%= urls[i].url %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+</body>
+
+</html>

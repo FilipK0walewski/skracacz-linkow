@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona logowania</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <p>Zaloguj się</p>
+    <form id="login-form" action="/login" method="POST" style="display: flex; flex-direction: column">
+        <input name="username" type="text" placeholder="nazwa użytkownika" required>
+        <input name="password" type="password" placeholder="hasło" required>
+        <button>Zaloguj się</button>
+    </form>
+    <span>Nie masz konta? <a href="/register">Zrób konto</a></span>
+    <a href="/">Srona domowa</a>
+</body>
+
+</html>
