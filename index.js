@@ -57,16 +57,16 @@ app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const result = await pool.query('SELECT id, username, password FROM users WHERE username = $1', [username])
     if (result.rows.length === 0) {
-        return res.status(401).send(`Niepoprawna nazwa użytkownika lub hasło.`);
+        return res.status(401).json({ message: 'Nieprawidłowy login lub hasło.' })
     }
     const user = result.rows[0]
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (isPasswordValid !== true) {
-        return res.status(401).send(`Niepoprawna nazwa użytkownika lub hasło.`);
+        return res.status(401).json({ message: 'Nieprawidłowy login lub hasło.' })
     }
     const token = jwt.sign({ id: user.id, username: user.username }, jwtSecretKey)
-    res.cookie('token', token, { httpOnly: true })
-    res.redirect('/')
+    res.cookie('token', token, { httpOnly: true, sameSite: 'Strict' })
+    res.status(200).json({ username: user.username });
 })
 
 app.get('/logout', (req, res) => {
@@ -81,20 +81,24 @@ app.get('/register', (req, res) => {
 
 app.post('/register', async (req, res) => {
     const { username, password0, password1 } = req.body;
-    if (password0 !== password1) {
-        return res.status(401).json('Hasła nie są takie same.')
-    }
     const usernameExists = await pool.query('SELECT 1 FROM users WHERE username = $1', [username])
     if (usernameExists.rows.length !== 0) {
-        return res.status(409).send(`Użytkownik o nazwie ${username} już istnieje.`);
+        return res.status(409).json({ message: `Użytkownik o nazwie "${username}" już istnieje.` });
+    }
+    if (password0 !== password1) {
+        return res.status(401).json({ message: 'Hasła nie są takie same.' })
     }
     const hashedPassword = await bcrypt.hash(password0, 10);
     await pool.query('INSERT INTO users (username, password) VALUES ($1, $2)', [username, hashedPassword])
-    res.redirect(`/login?registrationSuccess=true&newUserName=${username}`)
+    res.status(201).json({ username })
 })
 
 app.post('/', getTokenData, async (req, res) => {
     let { url, name } = req.body;
+    if (!misc.checkIfStringIsUrl(url)) {
+        return res.status(400).json({ message: 'Niepoprawny link.' })
+    }
+
     name = name || misc.getRandomName()
     if (['', 'login', 'logout', 'register', 'your-urls'].includes(name)) {
         return res.status(403).json({ message: 'Niepoprawna nazwa linku, wybierz inną nazwę.' })
@@ -111,16 +115,25 @@ app.post('/', getTokenData, async (req, res) => {
         await pool.query('INSERT INTO urls (url, name) VALUES ($1, $2)', [url, name])
 
     const niceUrl = `${req.protocol}://${req.headers.host}/${name}`
-    res.status(201).json({ url, niceUrl })
+    res.status(201).json({ niceUrl })
 })
 
-app.get('/your-urls', getTokenData, async (req, res) => {
+app.get('/your-urls', getTokenData, (req, res) => {
+    if (!req.user) return res.redirect('/')
+    res.sendFile(path.join(__dirname, 'views', 'urls.html'));
+})
+
+app.get('/your-urls-data', getTokenData, async (req, res) => {
     const user = req.user;
-    if (!user) return res.redirect('/')
+    if (!user) return res.status(403)
+
+    const countResult = await pool.query('SELECT COUNT(1) FROM urls WHERE user_id = $1', [user.id])
+    const userUrlsCount = countResult.rows[0].count || 0
+
+    const result = await pool.query('SELECT name, url FROM urls WHERE user_id = $1', [user.id])
     const urlBeforeName = `${req.protocol}://${req.headers.host}/`
-    const result = await pool.query('SELECT name, url FROM urls where user_id = $1', [user.id])
     const urls = result.rows.map((row) => { return { ...row, niceUrl: `${urlBeforeName}${row.name}` } });
-    res.render('urls', { username: user.username, urls });
+    res.json({ username: user.username, urls, count: userUrlsCount })
 })
 
 app.get('/:name', async (req, res) => {

@@ -2,34 +2,30 @@
 <html lang="pl">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twoje linki</title>
-    <link rel="stylesheet" href="/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twoje linki</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/urls.js" defer></script>
 </head>
 
-<body style="justify-content: start;">
-    <br>
-    <p><%= username %> to są twoje linki.</p>
-    <span>Kliknij <a href="/">tutej</a> aby wrócić do strony domowej.</span>
-    <table>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>nice url</th>
-            <th>url</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (let i = 0; i < urls.length; i++) { %>
-            <tr>
-              <td><%= urls[i].name %></td>
-              <td><%= urls[i].niceUrl %></td>
-              <td><%= urls[i].url %></td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+<body style="display: block">
+  <div id="user-data-container" style="width: 100%; max-width: 1024px; margin-left: auto; margin-right: auto;"></div>
+  <div id="pagination-container" class="hidden mt" style="width: 100%; max-width: 1024px; margin-left: auto; margin-right: auto; display: flex; justify-content: space-between;">
+    <button id="prev-button">poprzednia strona</button>
+    <span id="page-info"></span>
+    <button id="next-button">następna strona</button>
+  </div>
+  <table id="table-container" class="hidden" style="width: 100%; max-width: 1024px; margin-left: auto; margin-right: auto;">
+    <thead>
+      <tr>
+        <th>Nazwa</th>
+        <th>Link</th>
+        <th>Skrócony link</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
 </body>
 
 </html>

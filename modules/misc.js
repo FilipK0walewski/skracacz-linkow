@@ -9,6 +9,11 @@ const getRandomName = () => {
     return randomName
 }
 
+const checkIfStringIsUrl = (str) => {
+    return /^.*\..*$/.test(str);
+}
+
 module.exports = {
-    getRandomName
+    getRandomName,
+    checkIfStringIsUrl
 };
