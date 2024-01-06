@@ -6,17 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strona logowania</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/login.js" defer></script>
 </head>
 
 <body>
-    <p>Zaloguj się</p>
-    <form id="login-form" action="/login" method="POST" style="display: flex; flex-direction: column">
-        <input name="username" type="text" placeholder="nazwa użytkownika" required>
-        <input name="password" type="password" placeholder="hasło" required>
+    <h2>Zaloguj się</h2>
+    <p id="message" class="hidden"></p>
+    <form id="login-form">
+        <div class="input-container">
+            <input id="username-input" class="input-0" name="username" type="text" placeholder=" " required>
+            <label for="username-input" class="label-0">Nazwa użytkownika</label>
+        </div>
+        <div class="input-container">
+            <input id="password-input" class="input-0" name="password" type="text" placeholder=" " required>
+            <label for="password-input" class="label-0">Hasło</label>
+        </div>
         <button>Zaloguj się</button>
     </form>
-    <span>Nie masz konta? <a href="/register">Zrób konto</a></span>
-    <a href="/">Srona domowa</a>
+    <span class="mt">Nie masz konta? <a href="/register">Załóż konto</a></span>
+    <a class="mt" href="/">Srona domowa</a>
 </body>
 
 </html>

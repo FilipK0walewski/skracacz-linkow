@@ -4,30 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Potężny skracacz linków</title>
+    <title>Skróć se</title>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/index.js" defer></script>
 </head>
 
 <body>
 
-    <h1>Potężny skracacz linków</h1>
-    <input id="url-input" class="input-0" type="text" placeholder="Co chcesz skrócić?">
-    <label>
-        <input id="user-url-name-checkbox" type="checkbox">
-        chce swoją nazwę
-    </label>
-    <input id="user-url-name-input" class="hidden input-0" type="text" placeholder="twoja nazwa linku">
-    <button id="save-btn">skruć</button> 
+    <h1>Skróć se</h1>
+
+    <form id="url-form">
+        <div class="input-container">
+            <input id="long-url-input" class="input-0" name="url" type="text" placeholder=" " required>
+            <label for="long-url-input" class="label-0">Wklej tu długi link</label>
+        </div>
+        <div class="input-container">
+            <input id="url-name-input" class="input-0" name="name" type="text" placeholder=" ">
+            <label for="url-name-input" class="label-0">Twoja nazwa linku(opcjonalna)</label>
+        </div>
+        <button id="save-btn">Skruć</button>
+    </form>
 
     <div id="server-result"></div>
 
     <% if (user) { %>
-        <span>Jesteś zalogowany jako <%= user.username %>!</span>
-        <a href="/your-urls">Zobacz swoje linki</a>
-        <a href="/logout">Wyloguj się</a>
+        <span >Jesteś zalogowany jako <%= user.username %>! <a href="/logout">Wyloguj się</a>.</span>
+        <a class="mt" href="/your-urls">Zobacz swoje linki</a>
     <% } else { %>
-        <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> albo <a href="/register">zrób konto</a>.</span>
+        <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span>
     <% } %>
 </body>
 
