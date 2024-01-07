@@ -48,6 +48,12 @@ app.get('/', getTokenData, (req, res) => {
     res.render('index', { user: req.user });
 })
 
+app.get('/username', getTokenData, (req, res) => {
+    console.log(req.user)
+    if (!req.user) return res.status(403).json({ message: 'Forbidden' })
+    return res.json({ username: req.user.username })
+})
+
 app.get('/login', (req, res) => {
     if (req.cookies.token) return res.redirect('/')
     res.sendFile(path.join(__dirname, 'views', 'login.html'));

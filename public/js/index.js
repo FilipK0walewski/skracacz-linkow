@@ -1,5 +1,6 @@
 const urlForm = document.getElementById('url-form')
 const serverResult = document.getElementById('server-result')
+const userData = document.getElementById('user-data')
 
 const copyToClipboard = () => {
     navigator.clipboard.writeText(document.getElementById('new-url-input').value);
@@ -34,3 +35,31 @@ urlForm.addEventListener('submit', async (event) => {
         serverResult.innerHTML = `<p class="error">Coś nie tak.</p>`
     }
 })
+
+
+const getUserData = async () => {
+    try {
+        const response = await fetch('/username', { headers: { 'Content-Type': 'application/json' } })
+        const result = await response.json()
+        if (response.status === 200 && result.username) {
+            console.log(result.username)
+            userData.innerHTML = `
+                <span>Jesteś zalogowany jako ${result.username}. <a href="your-urls">Zobacz swoje linki</a></span>
+                <a href="logout">Wyloguj się</a>
+            `
+        }
+        else {
+            userData.innerHTML = `
+                <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span> 
+            `
+        }
+    } catch {
+        userData.innerHTML = `
+            <span>Chesz zapisywać swoje linki?<a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span> 
+        `
+    }
+}
+
+window.onload = async () => {
+    await getUserData()
+}

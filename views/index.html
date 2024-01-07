@@ -11,7 +11,7 @@
 
 <body>
 
-    <h1>Skróć se</h1>
+    <h1>Skruć se</h1>
 
     <form id="url-form">
         <div class="input-container">
@@ -27,12 +27,7 @@
 
     <div id="server-result"></div>
 
-    <% if (user) { %>
-        <span >Jesteś zalogowany jako <%= user.username %>! <a href="/logout">Wyloguj się</a>.</span>
-        <a class="mt" href="/your-urls">Zobacz swoje linki</a>
-    <% } else { %>
-        <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span>
-    <% } %>
+    <div id="user-data"></div>
 </body>
 
 </html>
