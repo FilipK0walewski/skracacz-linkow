@@ -1,10 +1,15 @@
 const loginForm = document.getElementById('login-form')
-const message = document.getElementById('message')
+const errorMessage = document.getElementById('error-message')
+const successMessage = document.getElementById('success-message')
 
-const displayMessage = (text, isSuccess) => {
-    message.classList = []
-    message.classList.add(isSuccess === true ? 'success' : 'error')
-    message.textContent = text
+const setErrorMessage = (text) => {
+    if (errorMessage.classList.contains('hidden')) errorMessage.classList.remove('hidden')
+    errorMessage.textContent = text
+}
+
+const setSuccessMessage = (text) => {
+    if (successMessage.classList.contains('hidden')) successMessage.classList.remove('hidden')
+    successMessage.textContent = text
 }
 
 loginForm.addEventListener('submit', async (event) => {
@@ -15,12 +20,12 @@ loginForm.addEventListener('submit', async (event) => {
         const response = await fetch('/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
         const data = await response.json()
         if (response.status !== 200) {
-            displayMessage(data.message)
-            return
+            setErrorMessage(data.message)
+        } else {
+            window.location.href = '/';
         }
-        window.location.href = '/';
     } catch {
-        displayMessage('Coś poszło nie tak.')
+        setErrorMessage('Coś poszło nie tak.')
     }
 })
 
@@ -29,7 +34,7 @@ const checkNewUser = () => {
     const params = new URLSearchParams(url.search);
     const newUserName = params.get('newUserName');
     if (newUserName) {
-        displayMessage(`Gratulacje ${newUserName}! Twoje konto zostało utworzone, teraz mozesz się zalogować.`, true)
+        setSuccessMessage(`Gratulacje ${newUserName}! Twoje konto zostało utworzone, teraz mozesz się zalogować.`, true)
     }
 }
 

@@ -4,15 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Skurc.se czyli strona do skracania długich linkow.">
     <title>Strona logowania</title>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/login.js" defer></script>
 </head>
 
 <body>
+
+    <p id="success-message" class="hidden success"></p>
+
     <h2>Zaloguj się</h2>
-    <p id="message" class="hidden"></p>
-    <form id="login-form">
+
+    <form id="login-form" class="flex-col w-0">
         <div class="input-container">
             <input id="username-input" class="input-0" name="username" type="text" placeholder=" " required>
             <label for="username-input" class="label-0">Nazwa użytkownika</label>
@@ -23,6 +27,9 @@
         </div>
         <button>Zaloguj się</button>
     </form>
+
+    <p id="error-message" class="hidden error"></p>
+
     <span class="mt">Nie masz konta? <a href="/register">Załóż konto</a></span>
     <a class="mt" href="/">Strona domowa</a>
 </body>

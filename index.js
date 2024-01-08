@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const cors = require('cors');
 const express = require('express');
 const jwt = require('jsonwebtoken');
@@ -21,12 +22,8 @@ const pool = new Pool({
 });
 
 const app = express();
-
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views'));
-
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(compression());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
@@ -44,18 +41,17 @@ const getTokenData = (req, res, next) => {
     });
 };
 
-app.get('/', getTokenData, (req, res) => {
-    res.render('index', { user: req.user });
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
 })
 
 app.get('/username', getTokenData, (req, res) => {
-    console.log(req.user)
-    if (!req.user) return res.status(403).json({ message: 'Forbidden' })
-    return res.json({ username: req.user.username })
+    if (!req.user) return res.status(403).json({ message: 'Forbidden' });
+    return res.json({ username: req.user.username });
 })
 
 app.get('/login', (req, res) => {
-    if (req.cookies.token) return res.redirect('/')
+    if (req.cookies.token) return res.redirect('/');
     res.sendFile(path.join(__dirname, 'views', 'login.html'));
 })
 
@@ -71,17 +67,24 @@ app.post('/login', async (req, res) => {
         return res.status(401).json({ message: 'Nieprawidłowy login lub hasło.' })
     }
     const token = jwt.sign({ id: user.id, username: user.username }, jwtSecretKey)
-    res.cookie('token', token, { httpOnly: true, sameSite: 'Strict' })
+    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict' })
     res.status(200).json({ username: user.username });
 })
 
 app.get('/logout', (req, res) => {
-    if (req.cookies.token) res.clearCookie('token')
-    res.redirect('/')
+    if (req.cookies.token) {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Strict'
+        });
+        return res.json({ message: 'Wylogowano.' })
+    }
+    res.status(401).send('Nieautoryzowany.')
 })
 
 app.get('/register', (req, res) => {
-    if (req.cookies.token) return res.redirect('/')
+    if (req.cookies.token) return res.redirect('/');
     res.sendFile(path.join(__dirname, 'views', 'register.html'));
 })
 
@@ -106,7 +109,7 @@ app.post('/', getTokenData, async (req, res) => {
     }
 
     name = name || misc.getRandomName()
-    if (['', 'login', 'logout', 'register', 'your-urls'].includes(name)) {
+    if (['', 'login', 'logout', 'register', 'your-urls', 'your-urls-data', 'username'].includes(name)) {
         return res.status(403).json({ message: 'Niepoprawna nazwa linku, wybierz inną nazwę.' })
     }
 
