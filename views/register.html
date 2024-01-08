@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Skurc.se czyli strona do skracania długich linkow.">
     <title>Załóż konto</title>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/register.js" defer></script>
@@ -11,8 +12,8 @@
 
 <body>
     <h2>Załóż konto</h2>
-    <p id="message" class="hidden"></p>
-    <form id="register-form">
+
+    <form id="register-form" class="w-0 flex-col">
         <div class="input-container">
             <input id="username-input" class="input-0" name="username" type="text" placeholder=" " required>
             <label for="username-input" class="label-0">Nazwa użytkownika</label>
@@ -27,8 +28,11 @@
         </div>
         <button class="btn-0">Załóż konto</button>
     </form>
+
+    <p id="message" class="hidden error"></p>
+
     <span class="mt">Masz już konto? <a href="/login">Zaloguj się</a></span>
-    <a class="mt" href="/">Srona domowa</a> 
+    <a class="mt" href="/">Strona domowa</a>
 </body>
 
 </html>

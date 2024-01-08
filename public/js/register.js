@@ -3,7 +3,6 @@ const message = document.getElementById('message')
 
 const displayMessage = (text) => {
     message.textContent = text
-    if (!message.classList.contains('error')) message.classList.add('error')
     if (message.classList.contains('hidden')) message.classList.remove('hidden')
 }
 
@@ -19,13 +18,9 @@ registerForm.addEventListener('submit', async (event) => {
         const response = await fetch('/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
         const data = await response.json()
         if (response.status === 201) {
-            console.log(data)
             window.location.href = `/login?newUserName=${data.username}`;
-            return
-        } else if (data.message) {
-            displayMessage(data.message)
         } else {
-            displayMessage('Coś nie tak.')
+            displayMessage(data.message)
         }
     } catch (error) {
         displayMessage('Coś nie tak.')

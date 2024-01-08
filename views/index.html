@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Skurc.se czyli strona do skracania długich linkow.">
     <title>Skróć se</title>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/index.js" defer></script>
@@ -11,9 +12,9 @@
 
 <body>
 
-    <h1>Skróć se</h1>
+    <h1>Skruć se</h1>
 
-    <form id="url-form">
+    <form id="url-form" class="flex-col w-0">
         <div class="input-container">
             <input id="long-url-input" class="input-0" name="url" type="text" placeholder=" " required>
             <label for="long-url-input" class="label-0">Wklej tu długi link</label>
@@ -22,17 +23,12 @@
             <input id="url-name-input" class="input-0" name="name" type="text" placeholder=" ">
             <label for="url-name-input" class="label-0">Twoja nazwa linku(opcjonalna)</label>
         </div>
-        <button id="save-btn">Skruć</button>
+        <button>Skruć se</button>
     </form>
 
-    <div id="server-result"></div>
+    <div id="server-result" class="mt flex-col w-0"></div>
 
-    <% if (user) { %>
-        <span >Jesteś zalogowany jako <%= user.username %>! <a href="/logout">Wyloguj się</a>.</span>
-        <a class="mt" href="/your-urls">Zobacz swoje linki</a>
-    <% } else { %>
-        <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span>
-    <% } %>
+    <div id="user-data" class="mt flex-col"></div>
 </body>
 
 </html>
