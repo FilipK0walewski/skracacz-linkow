@@ -63,5 +63,6 @@ const logout = async () => {
 }
 
 window.onload = async () => {
+    console.log('123')
     await setUserData()
 }
