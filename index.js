@@ -6,20 +6,12 @@ const cors = require('cors');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-const { Pool } = require('pg');
 
 const misc = require('./modules/misc');
+const pool = require('./modules/db')
 
 const jwtSecretKey = 'jwtSecretKey';
 const port = 3000;
-
-const pool = new Pool({
-    user: 'siuras',
-    host: 'localhost',
-    database: 'siuras',
-    password: 'siuras',
-    port: 5432,
-});
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
