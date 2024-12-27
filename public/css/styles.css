@@ -10,6 +10,8 @@
     --transition-slow: 0;
     --transition-fast-default: .1s;
     --transition-slow-default: .25s;
+
+    --error: #b30055;
 }
 
 [theme="light"] {
@@ -41,7 +43,7 @@ html {
 }
 
 body {
-    padding-top: 7rem;
+    padding-top: 1rem;
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
@@ -193,6 +195,15 @@ button:focus {
     display: none !important;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.flex *+* {
+    margin-left: .5rem;
+}
+
 .flex-col {
     display: flex;
     flex-direction: column;
@@ -205,6 +216,10 @@ button:focus {
 .w-0 {
     width: 100%;
     max-width: 20rem;
+}
+
+.error {
+    color: var(--error);
 }
 
 @media (max-width: 600px) {

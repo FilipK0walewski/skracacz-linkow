@@ -15,6 +15,12 @@ urlForm.addEventListener('submit', async (event) => {
         body['name'] = formData.get('name')
     }
 
+    if (formData.get('expiresAt')) {
+        body['expiresAt'] = formData.get('expiresAt')
+    }
+
+    console.log(body)
+
     try {
         const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         const data = await response.json()

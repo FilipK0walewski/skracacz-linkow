@@ -1,17 +1,22 @@
 version: '3.8'
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:alpine
     environment:
-      POSTGRES_USER: siuras
-      POSTGRES_PASSWORD: siuras
-      POSTGRES_DB: siuras
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   web:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+      JWT_SECRET_KEY: secret
     depends_on:
       - postgres
     ports:

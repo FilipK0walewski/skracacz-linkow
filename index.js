@@ -10,7 +10,7 @@ const path = require('path');
 const misc = require('./modules/misc');
 const pool = require('./modules/db')
 
-const jwtSecretKey = 'jwtSecretKey';
+const jwtSecretKey = process.env.JWT_SECRET_KEY || 'jwtSecretKey';
 const port = 3000;
 
 const app = express();
@@ -95,13 +95,16 @@ app.post('/register', async (req, res) => {
 })
 
 app.post('/', getTokenData, async (req, res) => {
-    let { url, name } = req.body;
+    let { url, name, expiresAt } = req.body;
+
+    return res.status(400).json({message: expiresAt})
+
     if (!misc.checkIfStringIsUrl(url)) {
         return res.status(400).json({ message: 'Niepoprawny link.' })
     }
 
     name = name || misc.getRandomName()
-    if (['', 'login', 'logout', 'register', 'your-urls', 'your-urls-data', 'username'].includes(name)) {
+    if (!misc.checkIfUrlNameIsValid(name)) {
         return res.status(403).json({ message: 'Niepoprawna nazwa linku, wybierz inną nazwę.' })
     }
 
@@ -110,12 +113,15 @@ app.post('/', getTokenData, async (req, res) => {
         return res.status(403).json({ message: 'Nazwa linku już zajęta, wybierz inną nazwę.' })
     }
 
-    if (req.user && req.user.id)
-        await pool.query('INSERT INTO urls (url, name, user_id) VALUES ($1, $2, $3)', [url, name, req.user.id])
-    else
-        await pool.query('INSERT INTO urls (url, name) VALUES ($1, $2)', [url, name])
+    if (req.user && req.user.id) {
+        const query = 'INSERT INTO urls (url, name, user_id, expires_at) VALUES ($1, $2, $3)'
+        await pool.query(query, [url, name, req.user.id, expiresAt])
+    } else {
+        const query = 'INSERT INTO urls (url, name, expires_at) VALUES ($1, $2)'
+        await pool.query(query, [url, name, expiresAt])
+    }
 
-    const niceUrl = `${req.protocol}://${req.headers.host}/${name}`
+    const niceUrl = `${req.headers.host}/${name}`
     res.status(201).json({ niceUrl })
 })
 
