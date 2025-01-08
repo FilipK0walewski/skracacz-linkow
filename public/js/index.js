@@ -1,40 +1,107 @@
 const urlForm = document.getElementById('url-form')
 const serverResult = document.getElementById('server-result')
+const longUrlResult = document.getElementById('long-url-result')
+const shortUrlResult = document.getElementById('short-url-result')
 const userData = document.getElementById('user-data')
+const errorMessage = document.getElementById('error-message')
+
+const longUrlInput = document.getElementById('long-url-input')
+const urlNameInput = document.getElementById('url-name-input')
+
+const urlErrorMessage = document.getElementById('url-error')
+const urlNameErrorMessage = document.getElementById('url-name-error')
+
+const toogleVisibility = (element, shouldBeHidden) => {
+    if (shouldBeHidden) {
+        if (element.classList.contains('hidden'))
+    } else {
+
+    }
+}
+
+const reset = () => {
+    urlForm.reset()
+    if (urlForm.classList.contains('hidden')) urlForm.classList.remove('hidden')
+    if (!serverResult.classList.contains('hidden')) serverResult.classList.add('hidden')
+}
 
 const copyToClipboard = () => {
-    navigator.clipboard.writeText(document.getElementById('new-url-input').value);
+    navigator.clipboard.writeText(shortUrlResult.value);
+}
+
+const displayErrorMessage = (text) => {
+    if (errorMessage.classList.contains('hidden')) errorMessage.classList.remove('hidden')
+    errorMessage.textContent = text
+}
+
+const displayUrlError = (text) => {
+    if (urlErrorMessage.classList.contains('hidden')) urlErrorMessage.classList.remove('hidden')
+    urlErrorMessage.textContent = text
+    longUrlInput.focus()
+}
+
+const displayUrlNameError = (text) => {
+    if (urlNameErrorMessage.classList.contains('hidden')) urlNameErrorMessage.classList.remove('hidden')
+    urlNameErrorMessage.textContent = text
+    urlNameInput.focus()
+}
+
+const hideUrlError = () => {
+    if (!urlErrorMessage.classList.contains('hidden')) urlErrorMessage.classList.add('hidden')
+    urlErrorMessage.textContent = ''
+}
+
+const isValidUrl = (str) => {
+    console.log(str.length)
+    if (str.length === 0) {
+        displayUrlError('Wpisz coś')
+        return false
+    }
+    hideUrlError()
+    return true
 }
 
 urlForm.addEventListener('submit', async (event) => {
     event.preventDefault()
     const formData = new FormData(urlForm);
-    const body = { url: formData.get('url') }
+    const url = formData.get('url').trim()
 
-    if (formData.get('name') && formData.get('name').trim().length != 0) {
+    const isValid = isValidUrl(url)
+    if (isValid === false) return
+
+    const body = { url }
+
+    if (formData.get('name') && formData.get('name').trim().length !== 0) {
         body['name'] = formData.get('name')
     }
 
-    if (formData.get('expiresAt')) {
-        body['expiresAt'] = formData.get('expiresAt')
+    if (formData.get('date')) {
+        body['date'] = formData.get('date')
     }
 
     console.log(body)
+    // return
+
 
     try {
         const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         const data = await response.json()
+        console.log(data.errorCode)
         if (response.status === 201) {
-            serverResult.innerHTML = `
-                <span>Proszę, to twój skrócony link:</span>
-                <input id="new-url-input" type="text" class="input-0" value="${data.niceUrl}" readonly/>
-                <button class="btn-0" onclick="copyToClipboard()">Kopiuj</button>
-            `
+            if (!urlForm.classList.contains('hidden')) urlForm.classList.add('hidden')
+            if (serverResult.classList.contains('hidden')) serverResult.classList.remove('hidden')
+            if (!errorMessage.classList.contains('hidden')) errorMessage.classList.add('hidden')
+            longUrlResult.value = data.longUrl
+            shortUrlResult.value = data.shortUrl
         } else {
-            serverResult.innerHTML = `<p class="error">${data.message}</p>`
+            if (data.errorCode === 'VALUE_ALREADY_USED') {
+                displayUrlNameError(data.message)
+            } else {
+                displayUrlError(data.message)
+            }
         }
     } catch {
-        serverResult.innerHTML = `<p class="error">Coś nie tak.</p>`
+        displayErrorMessage('Coś nie tak')
     }
 })
 
@@ -69,6 +136,5 @@ const logout = async () => {
 }
 
 window.onload = async () => {
-    console.log('123')
     await setUserData()
 }

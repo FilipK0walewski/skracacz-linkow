@@ -28,45 +28,66 @@
     <h1>Skruć <span class="primary-color">se</span></h1>
 
     <form id="url-form" class="flex-col w-0">
-        <div class="input-container">
-            <input id="long-url-input" class="input-0" name="url" type="text" placeholder=" " required>
-            <label for="long-url-input" class="label-0">Wklej tu długi link</label>
+
+        <div>
+            <div class="input-container">
+                <input id="long-url-input" class="input-0" name="url" type="text" placeholder=" " autocomplete="off">
+                <label for="long-url-input" class="label-0">Twój długi link</label>
+            </div>
+            <p id="url-error" class="error url-error hidden"></p>
         </div>
 
-        <div class="flex">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <g fill="none">
-                    <path stroke="currentColor" stroke-width="1.5"
-                        d="M17 8.21c2.989.723 5 2.071 5 3.616C22 14.131 17.523 16 12 16S2 14.13 2 11.826c0-1.545 2.011-2.893 5-3.615" />
-                    <path stroke="currentColor" stroke-width="1.5"
-                        d="M7 8.729A4.73 4.73 0 0 1 11.729 4h.542A4.73 4.73 0 0 1 17 8.729c0 .177-.054.35-.2.451c-.414.288-1.61.82-4.8.82s-4.386-.532-4.8-.82c-.146-.1-.2-.274-.2-.451Z" />
-                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5"
-                        d="M12 16v3m-6.5-3.5l-1 2m14-2l1 2" />
-                    <circle cx="12" cy="13" r="1" fill="currentColor" />
-                    <circle cx="7" cy="12" r="1" fill="currentColor" />
-                    <circle cx="17" cy="12" r="1" fill="currentColor" />
-                </g>
-            </svg>
-            <span>
-                Tuning
-            </span>
+        <div>
+            <div class="input-container">
+                <input id="url-name-input" class="input-0" name="name" type="text" placeholder=" " autocomplete="off">
+                <label for="url-name-input" class="label-0">Twoja nazwa linku</label>
+            </div>
+            <p id="url-name-error" class="error url-error hidden"></p>
         </div>
+
+        <button type="button" id="cosutomize-button" class="secondary-button">więcej opcji</button>
 
         <div class="input-container">
-            <input id="url-name-input" class="input-0" name="name" type="text" placeholder=" ">
-            <label for="url-name-input" class="label-0">Twoja nazwa linku</label>
+            <input id="date-input" class="input-0" name="date" type="date" placeholder=" ">
+            <label for="date-input" class="label-0">Wygasanie linku</label>
         </div>
 
-        <div class="input-container">
-            <input id="expire-date-input" class="input-0" name="expiresAt" type="date" placeholder=" ">
-            <label for="expire-date-input" class="label-0">Wygasanie linku</label>
+        <div class="flex" style="width: 100%;">
+
+            <div class="input-container">
+                <input id="hour-input" class="input-0" name="hour" type="number" min="0" max="23" placeholder=" ">
+                <label for="hour-input" class="label-0">godzina</label>
+            </div>
+
+            <div class="input-container" style="margin-left: .5rem;">
+                <input id="minute-input" class="input-0" name="minute" type="number" min="0" max="59" placeholder=" ">
+                <label for="minute-input" class="label-0">minuta</label>
+            </div>
+
         </div>
 
-        <button>Skruć se</button>
+        <button type="submit" class="primary-button">Skruć se</button>
+
     </form>
 
-    <div id="server-result" class="flex-col w-0"></div>
+    <div id="server-result" class="flex-col w-0 hidden">
+
+        <div class="input-container">
+            <input id="long-url-result" class="input-0" name="url" type="text" placeholder=" " readonly>
+            <label for="long-url-result" class="label-0">Twój długi link</label>
+        </div>
+
+        <div class="input-container">
+            <input id="short-url-result" class="input-0" name="url" type="text" placeholder=" " readonly>
+            <label for="short-url-result" class="label-0">Skrucony link</label>
+        </div>
+
+        <button onclick="copyToClipboard()" class="primary-button">Kopiuj</button>
+        <button onclick="reset()" class="primary-button">Skruć coś innego</button>
+
+    </div>
+
+    <p id="error-message" class="hidden error"></p>
 
     <div id="user-data" class="mt flex-col"></div>
 </body>
