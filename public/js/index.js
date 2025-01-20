@@ -3,26 +3,21 @@ const serverResult = document.getElementById('server-result')
 const longUrlResult = document.getElementById('long-url-result')
 const shortUrlResult = document.getElementById('short-url-result')
 const userData = document.getElementById('user-data')
-const errorMessage = document.getElementById('error-message')
 
 const longUrlInput = document.getElementById('long-url-input')
 const urlNameInput = document.getElementById('url-name-input')
 
-const urlErrorMessage = document.getElementById('url-error')
-const urlNameErrorMessage = document.getElementById('url-name-error')
-
-const toogleVisibility = (element, shouldBeHidden) => {
-    if (shouldBeHidden) {
-        if (element.classList.contains('hidden'))
-    } else {
-
-    }
-}
+const errorMessage = document.getElementById('error-message')
+const urlError = document.getElementById('url-error')
+const urlNameError = document.getElementById('url-name-error')
 
 const reset = () => {
     urlForm.reset()
-    if (urlForm.classList.contains('hidden')) urlForm.classList.remove('hidden')
-    if (!serverResult.classList.contains('hidden')) serverResult.classList.add('hidden')
+    toogleVisibility(urlForm, false)
+    toogleVisibility(serverResult, true)
+    toogleVisibility(errorMessage, true)
+    toogleVisibility(urlError, true)
+    toogleVisibility(urlNameError, true)
 }
 
 const copyToClipboard = () => {
@@ -30,35 +25,26 @@ const copyToClipboard = () => {
 }
 
 const displayErrorMessage = (text) => {
-    if (errorMessage.classList.contains('hidden')) errorMessage.classList.remove('hidden')
+    toogleVisibility(errorMessage, false)
     errorMessage.textContent = text
 }
 
 const displayUrlError = (text) => {
-    if (urlErrorMessage.classList.contains('hidden')) urlErrorMessage.classList.remove('hidden')
-    urlErrorMessage.textContent = text
+    toogleVisibility(urlError, false)
+    urlError.textContent = text
+    longUrlInput.value = longUrlInput.value.trim()
     longUrlInput.focus()
 }
 
 const displayUrlNameError = (text) => {
-    if (urlNameErrorMessage.classList.contains('hidden')) urlNameErrorMessage.classList.remove('hidden')
-    urlNameErrorMessage.textContent = text
+    toogleVisibility(urlNameError, false)
+    urlNameError.textContent = text
     urlNameInput.focus()
 }
 
 const hideUrlError = () => {
-    if (!urlErrorMessage.classList.contains('hidden')) urlErrorMessage.classList.add('hidden')
-    urlErrorMessage.textContent = ''
-}
-
-const isValidUrl = (str) => {
-    console.log(str.length)
-    if (str.length === 0) {
-        displayUrlError('Wpisz coś')
-        return false
-    }
-    hideUrlError()
-    return true
+    toogleVisibility(urlError, true)
+    urlError.textContent = ''
 }
 
 urlForm.addEventListener('submit', async (event) => {
@@ -66,31 +52,42 @@ urlForm.addEventListener('submit', async (event) => {
     const formData = new FormData(urlForm);
     const url = formData.get('url').trim()
 
-    const isValid = isValidUrl(url)
-    if (isValid === false) return
+    if (url.length === 0) {
+        displayUrlError('Wpisz coś')
+        return
+    } else if (!isValidUrl(url)) {
+        displayUrlError('Niepoprawny link')
+        return
+    }
 
     const body = { url }
 
-    if (formData.get('name') && formData.get('name').trim().length !== 0) {
-        body['name'] = formData.get('name')
+    const urlName = formData.get('name').trim()
+    if (urlName.length > 32) {
+        displayUrlNameError('Za długie')
+        return
+    } else if (urlName.length !== 0) {
+        body['name'] = urlName
     }
 
-    if (formData.get('date')) {
-        body['date'] = formData.get('date')
-    }
+    const expirationDate = formData.get('expirationDate')
+    const date = new Date(expirationDate)
+
+    console.log(expirationDate)
+
+    
+ 
 
     console.log(body)
-    // return
-
 
     try {
         const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         const data = await response.json()
-        console.log(data.errorCode)
+        console.log(data)
         if (response.status === 201) {
-            if (!urlForm.classList.contains('hidden')) urlForm.classList.add('hidden')
-            if (serverResult.classList.contains('hidden')) serverResult.classList.remove('hidden')
-            if (!errorMessage.classList.contains('hidden')) errorMessage.classList.add('hidden')
+            toogleVisibility(urlForm, true)
+            toogleVisibility(serverResult, false)
+            toogleVisibility(errorMessage, true)
             longUrlResult.value = data.longUrl
             shortUrlResult.value = data.shortUrl
         } else {

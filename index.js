@@ -96,6 +96,8 @@ app.post('/register', async (req, res) => {
 
 app.post('/', getTokenData, async (req, res) => {
     let { url, name, expiresAt } = req.body;
+    console.log(expiresAt)
+    expiresAt = '2025-01-08 14:30:00'
 
     // return res.status(400).json({message: expiresAt})
 

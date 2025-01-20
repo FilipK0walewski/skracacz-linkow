@@ -7,8 +7,9 @@
     <meta name="description" content="Skurc.se czyli strona do skracania długich linkow.">
     <title>Skruć se</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/theme.js" defer></script>
+    <script src="/js/common.js" defer></script>
     <script src="/js/index.js" defer></script>
+    <script src="/js/theme.js" defer></script>
 </head>
 
 <body class="no-transition">
@@ -48,19 +49,19 @@
         <button type="button" id="cosutomize-button" class="secondary-button">więcej opcji</button>
 
         <div class="input-container">
-            <input id="date-input" class="input-0" name="date" type="date" placeholder=" ">
+            <input id="date-input" class="input-0" name="expirationDate" type="date" placeholder=" ">
             <label for="date-input" class="label-0">Wygasanie linku</label>
         </div>
 
         <div class="flex" style="width: 100%;">
 
             <div class="input-container">
-                <input id="hour-input" class="input-0" name="hour" type="number" min="0" max="23" placeholder=" ">
+                <input id="hour-input" class="input-0" name="expirationHour" type="number" min="0" max="23" placeholder=" ">
                 <label for="hour-input" class="label-0">godzina</label>
             </div>
 
             <div class="input-container" style="margin-left: .5rem;">
-                <input id="minute-input" class="input-0" name="minute" type="number" min="0" max="59" placeholder=" ">
+                <input id="minute-input" class="input-0" name="expirationMinute" type="number" min="0" max="59" placeholder=" ">
                 <label for="minute-input" class="label-0">minuta</label>
             </div>
 
