@@ -25,4 +25,4 @@ jobs:
             cd /home/marcin/docker/siuras || exit
             git pull origin main  # Pull latest changes from the 'main' branch
             docker compose up --build -d  # Recreate and start containers in detached mode
-            EOF
+          EOF
