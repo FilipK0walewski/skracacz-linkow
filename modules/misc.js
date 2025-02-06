@@ -19,8 +19,16 @@ const checkIfUrlNameIsValid = (urlName) => {
     return true
 }
 
+const ensureProtocol = (url) => {
+    if (!/^https?:\/\//i.test(url)) {
+        url = 'http://' + url
+    }
+    return url
+}
+
 module.exports = {
     getRandomName,
     checkIfStringIsUrl,
-    checkIfUrlNameIsValid
+    checkIfUrlNameIsValid,
+    ensureProtocol
 };

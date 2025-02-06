@@ -46,25 +46,12 @@
             <p id="url-name-error" class="error url-error hidden"></p>
         </div>
 
-        <button type="button" id="cosutomize-button" class="secondary-button">więcej opcji</button>
-
-        <div class="input-container">
-            <input id="date-input" class="input-0" name="expirationDate" type="date" placeholder=" ">
-            <label for="date-input" class="label-0">Wygasanie linku</label>
-        </div>
-
-        <div class="flex" style="width: 100%;">
-
+        <div>
             <div class="input-container">
-                <input id="hour-input" class="input-0" name="expirationHour" type="number" min="0" max="23" placeholder=" ">
-                <label for="hour-input" class="label-0">godzina</label>
+                <input id="date-input" class="input-0" name="expirationDate" type="date" placeholder=" ">
+                <label for="date-input" class="label-0">Wygasanie linku</label>
             </div>
-
-            <div class="input-container" style="margin-left: .5rem;">
-                <input id="minute-input" class="input-0" name="expirationMinute" type="number" min="0" max="59" placeholder=" ">
-                <label for="minute-input" class="label-0">minuta</label>
-            </div>
-
+            <p id="expire-date-error" class="error url-error hidden"></p>
         </div>
 
         <button type="submit" class="primary-button">Skruć se</button>
@@ -74,13 +61,8 @@
     <div id="server-result" class="flex-col w-0 hidden">
 
         <div class="input-container">
-            <input id="long-url-result" class="input-0" name="url" type="text" placeholder=" " readonly>
-            <label for="long-url-result" class="label-0">Twój długi link</label>
-        </div>
-
-        <div class="input-container">
-            <input id="short-url-result" class="input-0" name="url" type="text" placeholder=" " readonly>
-            <label for="short-url-result" class="label-0">Skrucony link</label>
+            <input id="short-url-result" class="input-0" type="text" placeholder=" " readonly>
+            <label for="short-url-result" class="label-0">Twój skrucony link</label>
         </div>
 
         <button onclick="copyToClipboard()" class="primary-button">Kopiuj</button>

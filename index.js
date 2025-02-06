@@ -96,10 +96,6 @@ app.post('/register', async (req, res) => {
 
 app.post('/', getTokenData, async (req, res) => {
     let { url, name, expiresAt } = req.body;
-    console.log(expiresAt)
-    expiresAt = '2025-01-08 14:30:00'
-
-    // return res.status(400).json({message: expiresAt})
 
     if (!misc.checkIfStringIsUrl(url)) {
         return res.status(400).json({ message: 'Niepoprawny link.' })
@@ -147,11 +143,17 @@ app.get('/your-urls-data', getTokenData, async (req, res) => {
 
 app.get('/:name', async (req, res) => {
     const name = req.params.name
-    const result = await pool.query('SELECT url FROM urls WHERE name = $1', [name])
+    const result = await pool.query('SELECT url FROM urls WHERE name = $1 AND (expires_at IS NULL OR expires_at > NOW())', [name])
+
     if (result.rowCount === 0) {
         return res.sendFile(path.join(__dirname, 'views', '404.html'));
     }
-    res.redirect(result.rows[0].url)
+
+    const url = result.rows[0].url
+    console.log(url)
+    const redirectUrl = misc.ensureProtocol(url)
+    console.log(redirectUrl)
+    res.redirect(301, redirectUrl)
 })
 
 app.listen(port, async () => {

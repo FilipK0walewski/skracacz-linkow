@@ -1,6 +1,5 @@
 const urlForm = document.getElementById('url-form')
 const serverResult = document.getElementById('server-result')
-const longUrlResult = document.getElementById('long-url-result')
 const shortUrlResult = document.getElementById('short-url-result')
 const userData = document.getElementById('user-data')
 
@@ -10,6 +9,7 @@ const urlNameInput = document.getElementById('url-name-input')
 const errorMessage = document.getElementById('error-message')
 const urlError = document.getElementById('url-error')
 const urlNameError = document.getElementById('url-name-error')
+const expireDateError = document.getElementById('expire-date-error')
 
 const reset = () => {
     urlForm.reset()
@@ -42,13 +42,26 @@ const displayUrlNameError = (text) => {
     urlNameInput.focus()
 }
 
+const displayExpireDateError = (text) => {
+    toogleVisibility(expireDateError, false)
+    expireDateError.textContent = text
+}
+
 const hideUrlError = () => {
     toogleVisibility(urlError, true)
     urlError.textContent = ''
 }
 
+const hideErrors = () => {
+    toogleVisibility(urlError, true)
+    toogleVisibility(urlNameError, true)
+    toogleVisibility(expireDateError, true)
+}
+
 urlForm.addEventListener('submit', async (event) => {
     event.preventDefault()
+    hideErrors()
+
     const formData = new FormData(urlForm);
     const url = formData.get('url').trim()
 
@@ -69,16 +82,20 @@ urlForm.addEventListener('submit', async (event) => {
     } else if (urlName.length !== 0) {
         body['name'] = urlName
     }
-
-    const expirationDate = formData.get('expirationDate')
-    const date = new Date(expirationDate)
-
-    console.log(expirationDate)
-
     
- 
+    const expirationDate = formData.get('expirationDate')
 
-    console.log(body)
+    if (expirationDate) {
+        const expiresAt = new Date(expirationDate)
+        const currentDate = new Date()
+        if (currentDate >= expiresAt) {
+            console.log('Wybierz datę z przyszłości')
+            displayExpireDateError('Wybierz datę z przyszłości.')
+            return
+        }
+        console.log('expirationDate', expirationDate)
+        body['expiresAt'] = expiresAt.toISOString();
+    }
 
     try {
         const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
@@ -88,7 +105,6 @@ urlForm.addEventListener('submit', async (event) => {
             toogleVisibility(urlForm, true)
             toogleVisibility(serverResult, false)
             toogleVisibility(errorMessage, true)
-            longUrlResult.value = data.longUrl
             shortUrlResult.value = data.shortUrl
         } else {
             if (data.errorCode === 'VALUE_ALREADY_USED') {
@@ -97,7 +113,9 @@ urlForm.addEventListener('submit', async (event) => {
                 displayUrlError(data.message)
             }
         }
-    } catch {
+    } catch (error) {
+        console.log('error catched')
+        console.log(error)
         displayErrorMessage('Coś nie tak')
     }
 })
@@ -119,7 +137,7 @@ const setUserData = async () => {
         }
     } catch {
         userData.innerHTML = `
-            <span>Chesz zapisywać swoje linki?<a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span> 
+            <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> a3lbo <a href="/register">załóż konto</a>.</span> 
         `
     }
 }
@@ -128,7 +146,7 @@ const logout = async () => {
     await fetch('/logout')
     localStorage.removeItem('username')
     userData.innerHTML = `
-        <span>Chesz zapisywać swoje linki?<a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span> 
+        <span>Chesz zapisywać swoje linki? <a href="/login">Zaloguj się</a> albo <a href="/register">załóż konto</a>.</span> 
     `
 }
 
