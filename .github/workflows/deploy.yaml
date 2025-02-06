@@ -24,6 +24,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no marcin@70.34.244.136 << 'EOF'
             cd /home/marcin/docker/siuras || exit
             git pull origin main  # Pull latest changes from the 'main' branch
-            docker compose pull  # Pull updated images
             docker compose up --build -d  # Recreate and start containers in detached mode
             EOF
