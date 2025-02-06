@@ -18,6 +18,7 @@ themeSwitch.addEventListener('change', () => {
     }
 })
 
+// set transition time after page load
 window.addEventListener('load', function() {
     const fast = getComputedStyle(document.documentElement).getPropertyValue('--transition-fast-default');
     const slow = getComputedStyle(document.documentElement).getPropertyValue('--transition-slow-default');

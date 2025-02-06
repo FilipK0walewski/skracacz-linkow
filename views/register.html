@@ -27,6 +27,8 @@
 
     <h2>Załóż konto</h2>
 
+    <p id="message" class="hidden error"></p>
+
     <form id="register-form" class="w-0 flex-col">
         <div class="input-container">
             <input id="username-input" class="input-0" name="username" type="text" placeholder=" " required>
@@ -40,10 +42,8 @@
             <input id="password1-input" class="input-0" name="password1" type="password" placeholder=" " required>
             <label for="password1-input" class="label-0">Powtórz hasło</label>
         </div>
-        <button class="btn-0">Załóż konto</button>
+        <button class="primary-button">Załóż konto</button>
     </form>
-
-    <p id="message" class="hidden error"></p>
 
     <span class="mt">Masz już konto? <a href="/login">Zaloguj się</a></span>
     <a class="mt" href="/">Strona domowa</a>

@@ -3,8 +3,12 @@ const errorMessage = document.getElementById('error-message')
 const successMessage = document.getElementById('success-message')
 
 const setErrorMessage = (text) => {
+    let messageText = text.toUpperCase()
+    if (messageText.charAt(messageText.length - 1) !== '!') {
+        messageText += '!'
+    }
     if (errorMessage.classList.contains('hidden')) errorMessage.classList.remove('hidden')
-    errorMessage.textContent = text
+    errorMessage.textContent = messageText
 }
 
 const setSuccessMessage = (text) => {
@@ -25,7 +29,7 @@ loginForm.addEventListener('submit', async (event) => {
             window.location.href = '/';
         }
     } catch {
-        setErrorMessage('Coś poszło nie tak.')
+        setErrorMessage('Coś poszło nie tak')
     }
 })
 
@@ -34,7 +38,7 @@ const checkNewUser = () => {
     const params = new URLSearchParams(url.search);
     const newUserName = params.get('newUserName');
     if (newUserName) {
-        setSuccessMessage(`Gratulacje ${newUserName}! Twoje konto zostało utworzone, teraz mozesz się zalogować.`, true)
+        setSuccessMessage(`Gratulacje ${newUserName}! Twoje konto zostało utworzone, teraz mozesz się zalogować.`)
     }
 }
 

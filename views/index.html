@@ -7,8 +7,9 @@
     <meta name="description" content="Skurc.se czyli strona do skracania długich linkow.">
     <title>Skruć se</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/theme.js" defer></script>
+    <script src="/js/common.js" defer></script>
     <script src="/js/index.js" defer></script>
+    <script src="/js/theme.js" defer></script>
 </head>
 
 <body class="no-transition">
@@ -28,18 +29,49 @@
     <h1>Skruć <span class="primary-color">se</span></h1>
 
     <form id="url-form" class="flex-col w-0">
-        <div class="input-container">
-            <input id="long-url-input" class="input-0" name="url" type="text" placeholder=" " required>
-            <label for="long-url-input" class="label-0">Wklej tu długi link</label>
+
+        <div>
+            <div class="input-container">
+                <input id="long-url-input" class="input-0" name="url" type="text" placeholder=" " autocomplete="off">
+                <label for="long-url-input" class="label-0">Twój długi link</label>
+            </div>
+            <p id="url-error" class="error url-error hidden"></p>
         </div>
-        <div class="input-container">
-            <input id="url-name-input" class="input-0" name="name" type="text" placeholder=" ">
-            <label for="url-name-input" class="label-0">Twoja nazwa linku(opcjonalna)</label>
+
+        <div>
+            <div class="input-container">
+                <input id="url-name-input" class="input-0" name="name" type="text" placeholder=" " autocomplete="off">
+                <label for="url-name-input" class="label-0">Twoja nazwa linku</label>
+            </div>
+            <p id="url-name-error" class="error url-error hidden"></p>
         </div>
-        <button>Skruć se</button>
+
+        <div>
+            <div class="input-container">
+                <input id="date-input" class="input-0" name="expirationDate" type="date" placeholder=" ">
+                <label for="date-input" class="label-0">Wygasanie linku</label>
+            </div>
+            <p id="expire-date-error" class="error url-error hidden"></p>
+        </div>
+
+        <button type="submit" class="primary-button">Skruć se</button>
+
     </form>
 
-    <div id="server-result" class="mt flex-col w-0"></div>
+    <div id="server-result" class="flex-col w-0 hidden">
+
+        <div class="input-container">
+            <input id="short-url-result" class="input-0" type="text" placeholder=" " readonly>
+            <label for="short-url-result" class="label-0">Twój skrucony link</label>
+        </div>
+
+        <button onclick="copyToClipboard()" class="primary-button">Kopiuj</button>
+        <button onclick="reset()" class="primary-button">Skruć coś innego</button>
+
+    </div>
+
+    <p id="error-message" class="hidden error"></p>
+
     <div id="user-data" class="mt flex-col"></div>
 </body>
 

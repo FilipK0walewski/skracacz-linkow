@@ -13,7 +13,22 @@ const checkIfStringIsUrl = (str) => {
     return /^.*\..*$/.test(str);
 }
 
+const checkIfUrlNameIsValid = (urlName) => {
+    const notAllowet = ['', 'login', 'logout', 'register', 'urls', 'username']
+    if (notAllowet.includes(urlName)) return false
+    return true
+}
+
+const ensureProtocol = (url) => {
+    if (!/^https?:\/\//i.test(url)) {
+        url = 'http://' + url
+    }
+    return url
+}
+
 module.exports = {
     getRandomName,
-    checkIfStringIsUrl
+    checkIfStringIsUrl,
+    checkIfUrlNameIsValid,
+    ensureProtocol
 };

@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no marcin@70.34.244.136 << 'EOF'
+            cd /home/marcin/docker/siuras || exit
+            git pull origin main  # Pull latest changes from the 'main' branch
+            docker compose up --build -d  # Recreate and start containers in detached mode
+          EOF

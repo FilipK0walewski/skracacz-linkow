@@ -10,6 +10,9 @@
     --transition-slow: 0;
     --transition-fast-default: .1s;
     --transition-slow-default: .25s;
+
+    --error: #ff007f;
+    --success: #00b300;
 }
 
 [theme="light"] {
@@ -41,7 +44,7 @@ html {
 }
 
 body {
-    padding-top: 7rem;
+    padding-top: 1rem;
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
@@ -78,7 +81,7 @@ a:focus {
     outline: none;
 }
 
-button {
+.primary-button {
     display: inline-block;
     padding: .5rem 1rem;
     font-size: 1rem;
@@ -93,18 +96,27 @@ button {
     transition: all ease-in-out var(--transition-fast);
 }
 
-button:hover {
+.primary-button:hover {
     border-color: var(--primary-color);
 }
 
-button:focus {
+.primary-button:focus {
     border-color: var(--primary-color);
     outline: none;
 }
 
+.secondary-button {
+    text-decoration: underline;
+    color: var(--primary-color);
+    border: none;
+    width: max-content;
+    background-color: inherit;
+    cursor: pointer;
+}
+
 .input-0 {
     padding: .5rem;
-    font-size: 1rem;
+    font-size: .9rem;
     border: .1rem solid var(--border-color);
     border-radius: .2rem;
     width: 100%;
@@ -119,7 +131,7 @@ button:focus {
     top: 50%;
     left: .5rem;
     transform: translateY(-50%);
-    font-size: 1rem;
+    font-size: .9rem;
     color: var(--text-color);
     background-color: var(--background-color);
     transition: all ease-in-out var(--transition-fast);
@@ -127,11 +139,8 @@ button:focus {
 
 .input-container {
     position: relative;
+    width: 100%;
 }
-
-/* .input-0:hover {
-    border-color: var(--secondary-color);
-} */
 
 .input-0:focus {
     border-color: var(--primary-color);
@@ -180,7 +189,6 @@ button:focus {
     margin-top: 1rem;
 }
 
-
 .text-big {
     font-size: 3rem !important;
 }
@@ -192,6 +200,16 @@ button:focus {
 .hidden {
     display: none !important;
 }
+
+.flex {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* .flex *+* {
+    margin-left: .5rem;
+} */
 
 .flex-col {
     display: flex;
@@ -205,6 +223,21 @@ button:focus {
 .w-0 {
     width: 100%;
     max-width: 20rem;
+}
+
+.error {
+    color: var(--error);
+}
+
+.success {
+    color: var(--success);
+}
+
+.url-error {
+    font-size: .75rem;
+    text-align: left;
+    padding: .1rem !important;
+    margin: 0 !important;
 }
 
 @media (max-width: 600px) {

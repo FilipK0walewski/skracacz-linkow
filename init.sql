@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS urls (
     name VARCHAR(255) UNIQUE NOT NULL,
     user_id INT,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    expires_at TIMESTAMP,
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE SET NULL
 );
